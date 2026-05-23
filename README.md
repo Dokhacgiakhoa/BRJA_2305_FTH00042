@@ -1,108 +1,81 @@
-# Tài Liệu Hướng Dẫn & Giới Thiệu Dự Án (Java Core & SQLite)
-
-Chào mừng bạn đến với kho lưu trữ mã nguồn của 2 bài tập Java thực tế. Dự án này bao gồm hai chương trình độc lập được thiết kế tối ưu, có chú thích tiếng Việt rõ ràng, ngắn gọn và đi kèm các bộ kiểm thử tự động (10/10 Test Cases) để tự kiểm chứng chất lượng.
-
----
-
-## 📂 Cấu Trúc Thư Mục Dự Án
+## CẤU TRÚC THƯ MỤC BÀI LÀM
+Thư mục dự án được tổ chức khoa học và phân chia rõ ràng thành hai phần dự án độc lập tương ứng với hai đề thi:
 
 ```text
 BRJA_2305_FTH00042/
 │
-├── BRJA_PRACTICE_FTH00042/        # 1. Dự án Quản lý Sinh viên (Console)
-│   ├── src/student/               # Thư mục mã nguồn chính
-│   │   ├── Student.java           # Định nghĩa đối tượng sinh viên (Serializable)
-│   │   ├── StudentManager.java    # Logic lưu trữ dữ liệu nhị phân (.dat) và in bảng
-│   │   ├── Main.java              # Cửa sổ Menu tương tác Console chính
-│   │   └── StudentTest.java       # Bộ 10 ca kiểm thử tự động bài Student
-│   └── run.bat                    # Script tự động biên dịch và khởi chạy trên Windows
+├── BRJA_PRACTICE_FTH00042/        # Phần 1: Dự án Quản lý Sinh viên (Console)
+│   ├── src/student/               # Thư mục chứa mã nguồn Java
+│   │   ├── Student.java           # Lớp thực thể đối tượng Sinh viên (Serializable)
+│   │   ├── StudentManager.java    # Xử lý luồng IO ghi/đọc nhị phân và hiển thị bảng Console
+│   │   ├── Main.java              # Lớp chứa hàm main khởi chạy chương trình Menu tương tác
+│   │   └── StudentTest.java       # Bộ 10 ca kiểm thử tự động tự kiểm chứng nghiệp vụ
+│   └── run.bat                    # Script chạy nhanh chương trình trên hệ điều hành Windows
 │
-├── BRJA_ASM_FTH00042/             # 2. Dự án Quản lý Sách (SQLite & Swing GUI)
-│   ├── src/book/                  # Thư mục mã nguồn chính
-│   │   ├── Book.java              # Định nghĩa đối tượng Sách (Book)
-│   │   ├── DatabaseManager.java   # Tự động nạp SQLite driver và tạo bảng tự động
-│   │   ├── BookDAO.java           # Lớp Data Access Object thực hiện các truy vấn CRUD SQL
-│   │   ├── AutoScrollReader.java  # Giao diện đọc sách hỗ trợ cuộn tự động (Timer)
-│   │   ├── BookGUI.java           # Giao diện quản trị Swing chính (Modern Design)
-│   │   └── BookTest.java          # Bộ 10 ca kiểm thử tự động bài Book với SQLite
-│   ├── lib/                       # Chứa thư viện SQLite JDBC Driver (.jar)
-│   └── run.bat                    # Script tự động biên dịch và khởi chạy trên Windows
+├── BRJA_ASM_FTH00042/             # Phần 2: Dự án Quản lý Sách nâng cao (Swing GUI & SQLite)
+│   ├── src/book/                  # Thư mục chứa mã nguồn Java
+│   │   ├── Book.java              # Lớp thực thể đối tượng Sách
+│   │   ├── DatabaseManager.java   # Quản lý Driver và cấu trúc bảng SQLite tự động
+│   │   ├── BookDAO.java           # Thực hiện các truy vấn dữ liệu CRUD SQLite bằng PreparedStatement
+│   │   ├── AutoScrollReader.java  # Hộp thoại đọc sách tối màu hỗ trợ Timer tự động cuộn
+│   │   ├── BookGUI.java           # Lớp giao diện Swing chính quản trị thư viện sách
+│   │   └── BookTest.java          # Bộ 10 ca kiểm thử tự động kết nối CSDL và các hàm DAO
+│   ├── lib/                       # Chứa thư viện liên kết SQLite JDBC Driver (.jar)
+│   └── run.bat                    # Script chạy nhanh chương trình trên hệ điều hành Windows
 │
-└── .gitignore                     # Cấu hình bỏ qua các file thừa (bin, DB, dat, PDF) khi đẩy Git
+├── .gitignore                     # Cấu hình bỏ qua các tệp tin biên dịch dư thừa khi lưu trữ
+└── README.md                      # Tệp tin báo cáo nộp bài thi này
 ```
 
----
+## HƯỚNG DẪN CHẠY VÀ CHẤM BÀI CHI TIẾT
 
-## 🛠️ Yêu Cầu Hệ Thống
+### 1. Phần 1: Chương trình Quản lý Sinh viên (Console)
+Ứng dụng thực hiện quản lý danh sách sinh viên tạm thời trong bộ nhớ và lưu trữ bền vững lâu dài bằng kỹ thuật tuần tự hóa đối tượng ra file nhị phân `students.dat`.
 
-Để chạy các ứng dụng trong dự án, máy tính của bạn cần cài đặt sẵn:
-- **Java Development Kit (JDK)**: Phiên bản 8 trở lên (khuyến nghị JDK 17 hoặc 21).
-- **Môi trường Windows**: Có hỗ trợ chạy file script `.bat` (Command Prompt hoặc PowerShell).
-- **Hỗ trợ bảng mã UTF-8**: Để hiển thị tiếng Việt có dấu chuẩn xác trên cửa sổ Console.
+* **Cách chạy nhanh (Khuyến nghị)**:
+  1. Mở thư mục `BRJA_PRACTICE_FTH00042`.
+  2. Kích đúp vào file `run.bat` để chương trình tự động biên dịch và khởi chạy trên cửa sổ Command Prompt của Windows.
+  
+* **Cách biên dịch và khởi chạy thủ công bằng Terminal**:
+  ```powershell
+  cd BRJA_PRACTICE_FTH00042
+  javac -encoding UTF-8 -d bin src/student/*.java
+  java "-Dfile.encoding=UTF-8" -cp bin student.Main
+  ```
+  *(Lưu ý: Tham số `-encoding UTF-8` và `-Dfile.encoding=UTF-8` là bắt buộc để hỗ trợ hiển thị tiếng Việt có dấu chuẩn xác trên cửa sổ dòng lệnh)*
 
----
+* **Chạy bộ kiểm thử tự động bài Sinh viên**:
+  Để chấm điểm nhanh tính chính xác của 10 ca kiểm thử nghiệp vụ bài sinh viên:
+  ```powershell
+  java "-Dfile.encoding=UTF-8" -cp bin student.StudentTest
+  ```
+  Kết quả mong đợi: Chương trình sẽ hiển thị đầy đủ thông tin vượt qua `10/10` ca kiểm thử từ Case 01 đến Case 10 và in giao diện bảng sinh viên mẫu.
 
-## 1. 🎓 Chương Trình Quản Lý Sinh Viên (Student Management)
+### 2. Phần 2: Chương trình Quản lý Sách nâng cao (Swing GUI & SQLite)
+Ứng dụng quản trị sách toàn diện tích hợp giao diện đồ họa người dùng hiện đại Swing (sắp xếp GridBagLayout thông minh, màu sắc chủ đạo hài hòa dễ nhìn) kết hợp cơ sở dữ liệu SQLite cục bộ để quản lý thông tin.
 
-Ứng dụng chạy trực tiếp trên giao diện dòng lệnh (Console), quản lý danh sách sinh viên tạm thời trong bộ nhớ và lưu trữ bền vững bằng kỹ thuật **Binary Serialization (Tuần tự hóa đối tượng)** ra file vật lý `students.dat`.
+* **Cách chạy nhanh (Khuyến nghị)**:
+  1. Mở thư mục `BRJA_ASM_FTH00042`.
+  2. Kích đúp vào file `run.bat` để tự động liên kết thư viện driver SQLite trong thư mục `lib/` và khởi chạy giao diện Swing.
 
-### ✨ Các Tính Năng Chính
-- **Add new student**: Thêm sinh viên mới, tự động kiểm tra tính hợp lệ dữ liệu (không được để trống, tuổi phải nằm trong khoảng 1 - 150, phòng chống lỗi nhập chữ thay cho số).
-- **Save**: Lưu toàn bộ danh sách sinh viên hiện có từ bộ nhớ tạm vào file nhị phân `students.dat` trên đĩa cứng.
-- **Display all students**: Tải lại dữ liệu mới nhất từ file nhị phân và in ra bảng danh sách được căn chỉnh cột chính xác theo đúng khuôn mẫu chuẩn của đề bài.
+* **Cách biên dịch và khởi chạy thủ công bằng Terminal**:
+  ```powershell
+  cd BRJA_ASM_FTH00042
+  javac -encoding UTF-8 -cp "lib/*" -d bin src/book/*.java
+  java "-Dfile.encoding=UTF-8" -cp "bin;lib/*" book.BookGUI
+  ```
 
-### 🚀 Hướng Dẫn Chạy Chương Trình
-1. Mở thư mục `BRJA_PRACTICE_FTH00042`.
-2. Kích đúp (Double-click) vào file `run.bat` để biên dịch tự động và khởi chạy ứng dụng.
-3. *Cách chạy thủ công bằng terminal*:
-   ```powershell
-   cd BRJA_PRACTICE_FTH00042
-   javac -encoding UTF-8 -d bin src/student/*.java
-   java "-Dfile.encoding=UTF-8" -cp bin student.Main
-   ```
+* **Chạy bộ kiểm thử tự động bài Sách**:
+  Bộ kiểm thử thực hiện chạy tuần tự 10 ca kiểm thử để kiểm tra kết nối database SQLite thực tế và toàn bộ logic CRUD của tầng dữ liệu DAO:
+  ```powershell
+  java "-Dfile.encoding=UTF-8" -cp "bin;lib/*" book.BookTest
+  ```
+  Kết quả mong đợi: Chương trình dọn dẹp database cũ, tự động khởi tạo lại cấu trúc bảng mới, vượt qua `10/10` ca kiểm thử từ Case 11 đến Case 20 (thêm mới, sửa, xóa, tìm kiếm gần đúng bằng LIKE, xuất file đơn lẻ, xuất danh mục hàng loạt).
 
-### 🧪 Bộ Kiểm Thử Tự Động (StudentTest)
-Để chạy kiểm tra 10 ca kiểm thử tự động xem lớp học có hoạt động chính xác theo nghiệp vụ yêu cầu hay không:
-```powershell
-java "-Dfile.encoding=UTF-8" -cp bin student.StudentTest
-```
-
----
-
-## 2. 📚 Chương Trình Quản Lý Sách Cao Cấp (Book Management)
-
-Ứng dụng quản trị thư viện sách toàn diện tích hợp giao diện đồ họa **Java Swing hiện đại** (sắp xếp layout thông minh, sử dụng bảng màu HSL hài hòa, dễ nhìn) kết hợp cơ sở dữ liệu quan hệ **SQLite** để lưu trữ.
-
-### ✨ Các Tính Năng Nổi Bật
-- **CRUD nâng cao**: Thêm mới, Cập nhật thông tin chi tiết, Xóa bỏ sách trực tiếp trên bảng hiển thị trực quan (có hộp thoại xác nhận an toàn trước khi xóa).
-- **Tìm kiếm đa năng**: Hỗ trợ tìm kiếm nhanh không phân biệt hoa thường theo **Mã sách (ID)** hoặc **Từ khóa Tiêu đề** (truy vấn `LIKE` SQL).
-- **Giao diện đọc sách cuộn tự động (Auto Scroll Reader)**:
-  - Sử dụng giao diện đọc chế độ tối (Dark Mode) giúp bảo vệ mắt.
-  - Tích hợp thanh trượt (Slider) cho phép điều chỉnh tốc độ cuộn từ chậm đến nhanh.
-  - Có nút bắt đầu (Start) / dừng lại (Stop) linh hoạt và tự động thông báo khi đọc hết cuốn sách.
-- **Xuất báo cáo văn bản chuyên nghiệp (Export)**:
-  - **Xuất đơn lẻ**: Xuất thông tin cuốn sách đang chọn thành file `.txt` có định dạng rõ ràng.
-  - **Xuất hàng loạt**: Tự động tạo thư mục `/exported_books/` xuất tất cả các cuốn sách thành các file riêng biệt, đồng thời tạo ra một file tổng hợp danh mục toàn bộ sách thư viện (`all_books_summary.txt`) được căn lề cột hoàn hảo.
-
-### 🚀 Hướng Dẫn Chạy Chương Trình
-1. Mở thư mục `BRJA_ASM_FTH00042`.
-2. Kích đúp vào file `run.bat` để biên dịch kèm nạp thư viện SQLite trong thư mục `lib/` và khởi chạy giao diện Swing.
-3. *Cách chạy thủ công bằng terminal*:
-   ```powershell
-   cd BRJA_ASM_FTH00042
-   javac -encoding UTF-8 -cp "lib/*" -d bin src/book/*.java
-   java "-Dfile.encoding=UTF-8" -cp "bin;lib/*" book.BookGUI
-   ```
-
-### 🧪 Bộ Kiểm Thử Tự Động (BookTest)
-Bộ kiểm thử tích hợp tự động thiết lập và dọn dẹp môi trường sạch, chạy tuần tự 10 ca kiểm thử kết nối DB SQLite và các chức năng của DAO:
-```powershell
-java "-Dfile.encoding=UTF-8" -cp "bin;lib/*" book.BookTest
-```
-
----
-
-## 📜 Lưu Ý Về Việc Đẩy Git
-Tệp tin cấu hình `.gitignore` ở thư mục gốc đã được thiết kế sẵn sàng và tối ưu. Khi bạn chạy lệnh `git commit`, hệ thống sẽ:
-1. **Chỉ đẩy lên các file mã nguồn có giá trị** (`.java`, các thư viện `.jar` cần thiết, tệp `.bat` khởi chạy ứng dụng và file `README.md` này).
-2. **Tự động loại bỏ hoàn toàn các file rác phát sinh**: Thư mục biên dịch `bin/`, file cơ sở dữ liệu `books.db`, file nhị phân `students.dat`, các file đề bài hướng dẫn PDF gốc và các file cài đặt cấu hình riêng của IDE cá nhân (`.idea/`, `.vscode/`).
+## TÓM TẮT CÁC CÔNG NGHỆ VÀ KỸ THUẬT ĐÃ ÁP DỤNG
+Qua việc hoàn thành bài thi này, em đã áp dụng thành công các kiến thức cốt lõi của ngôn ngữ lập trình Java Core bao gồm:
+1. **Lập trình hướng đối tượng (OOP)**: Thiết kế các thực thể đóng gói thuộc tính khoa học, thiết lập quan hệ cấu trúc dữ liệu rõ ràng.
+2. **Luồng vào ra dữ liệu (Java IO)**: Sử dụng luồng nhị phân `ObjectOutputStream`/`ObjectInputStream` để tuần tự hóa dữ liệu đối tượng; sử dụng các lớp ghi văn bản `PrintWriter` và `FileWriter` để định dạng xuất báo cáo văn bản chuyên nghiệp.
+3. **Thao tác cơ sở dữ liệu SQLite**: Sử dụng JDBC Driver kết nối cơ sở dữ liệu dạng tệp cục bộ SQLite, thực hiện truy vấn CRUD nâng cao, bảo mật thông tin bằng cách gán tham số qua `PreparedStatement` để phòng chống SQL Injection.
+4. **Lập trình giao diện Swing nâng cao**: Xây dựng Layout linh hoạt (BorderLayout, GridBagLayout), đồng bộ giao diện theo Look and Feel hệ thống, cập nhật JScrollBar bằng `Timer` định kỳ nhằm tránh xung đột luồng và nâng cao trải nghiệm người dùng với chế độ đọc sách ban đêm.
+5. **Kiểm tra và ràng buộc dữ liệu đầu vào**: Xử lý ngoại lệ `NumberFormatException`, lọc bỏ khoảng trắng thừa bằng `.trim()`, dùng biểu thức chính quy (Regex) để xử lý ký tự cấm đặt tên file của hệ điều hành Windows.

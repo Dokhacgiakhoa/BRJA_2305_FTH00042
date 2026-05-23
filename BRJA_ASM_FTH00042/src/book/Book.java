@@ -1,16 +1,30 @@
 package book;
 
-// Class định nghĩa đối tượng Sách
+// Lớp biểu diễn thông tin chi tiết của một cuốn sách trong hệ thống quản lý thư viện.
+// Đây là một lớp thực thể (Entity hay POJO) tuân thủ mô hình đóng gói dữ liệu JavaBean,
+// giúp luân chuyển thông tin của sách một cách nhất quán giữa tầng giao diện người dùng (GUI)
+// và tầng truy xuất cơ sở dữ liệu (DAO).
 public class Book {
+    // Mã định danh duy nhất của cuốn sách, trường này tự động tăng trong cơ sở dữ liệu SQLite
     private int id;
+    
+    // Tiêu đề hoặc tên của cuốn sách
     private String title;
+    
+    // Tên tác giả viết cuốn sách
     private String author;
+    
+    // Ngày cuốn sách được xuất bản hoặc phát hành ra thị trường
     private String releaseDate;
+    
+    // Nội dung chi tiết của cuốn sách, dùng để hiển thị trên giao diện đọc sách tự động
     private String content;
 
+    // Phương thức khởi tạo mặc định không tham số, giúp tạo một đối tượng sách trống
     public Book() {
     }
 
+    // Phương thức khởi tạo mới một đối tượng sách khi chưa có mã số ID (dùng khi thêm mới sách vào hệ thống)
     public Book(String title, String author, String releaseDate, String content) {
         this.title = title;
         this.author = author;
@@ -18,6 +32,7 @@ public class Book {
         this.content = content;
     }
 
+    // Phương thức khởi tạo đầy đủ thông tin sách bao gồm cả mã số ID đã được cấp phát từ database
     public Book(int id, String title, String author, String releaseDate, String content) {
         this.id = id;
         this.title = title;
@@ -26,6 +41,7 @@ public class Book {
         this.content = content;
     }
 
+    // Các phương thức Getter và Setter giúp truy xuất và cập nhật thông tin cho các thuộc tính của lớp
     public int getId() {
         return id;
     }

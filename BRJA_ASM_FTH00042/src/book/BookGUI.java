@@ -47,7 +47,7 @@ public class BookGUI extends JFrame {
         Color accentColor = new Color(41, 128, 185);
         Color bgLeftPanel = new Color(245, 247, 250);
 
-        // --- 1. Khung phía trên: Tìm kiếm và Tiêu đề ứng dụng ---
+        // Khung phía trên: Tìm kiếm và tiêu đề
         JPanel pnlTop = new JPanel(new BorderLayout(15, 10));
         pnlTop.setBackground(primaryColor);
         pnlTop.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
@@ -105,7 +105,7 @@ public class BookGUI extends JFrame {
         pnlTop.add(pnlSearch, BorderLayout.EAST);
         add(pnlTop, BorderLayout.NORTH);
 
-        // --- 2. Khung bên trái: Form nhập thông tin sách ---
+        // Khung bên trái: Form nhập thông tin sách
         JPanel pnlLeft = new JPanel(new GridBagLayout());
         pnlLeft.setBackground(bgLeftPanel);
         pnlLeft.setBorder(BorderFactory.createCompoundBorder(
@@ -126,7 +126,6 @@ public class BookGUI extends JFrame {
         gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 2;
         pnlLeft.add(lblFormTitle, gbc);
 
-        // Fields
         gbc.gridwidth = 1;
 
         // Mã sách (ID) - Tự sinh từ DB nên không cho sửa
@@ -139,7 +138,6 @@ public class BookGUI extends JFrame {
         gbc.gridx = 1;
         pnlLeft.add(txtId, gbc);
 
-        // Title
         gbc.gridx = 0; gbc.gridy = 2;
         pnlLeft.add(new JLabel("Tiêu Đề (Title):"), gbc);
         txtTitle = new JTextField();
@@ -147,7 +145,6 @@ public class BookGUI extends JFrame {
         gbc.gridx = 1;
         pnlLeft.add(txtTitle, gbc);
 
-        // Author
         gbc.gridx = 0; gbc.gridy = 3;
         pnlLeft.add(new JLabel("Tác Giả (Author):"), gbc);
         txtAuthor = new JTextField();
@@ -155,7 +152,6 @@ public class BookGUI extends JFrame {
         gbc.gridx = 1;
         pnlLeft.add(txtAuthor, gbc);
 
-        // Release Date
         gbc.gridx = 0; gbc.gridy = 4;
         pnlLeft.add(new JLabel("Ngày Phát Hành:"), gbc);
         txtReleaseDate = new JTextField();
@@ -163,7 +159,6 @@ public class BookGUI extends JFrame {
         gbc.gridx = 1;
         pnlLeft.add(txtReleaseDate, gbc);
 
-        // Content
         gbc.gridx = 0; gbc.gridy = 5;
         pnlLeft.add(new JLabel("Nội Dung (Content):"), gbc);
         txtContent = new JTextArea(8, 15);
@@ -176,7 +171,7 @@ public class BookGUI extends JFrame {
 
         add(pnlLeft, BorderLayout.WEST);
 
-        // --- 3. Khung ở giữa: Bảng hiển thị danh sách sách ---
+        // Khung ở giữa: Bảng hiển thị danh sách sách
         JPanel pnlCenter = new JPanel(new BorderLayout(5, 5));
         pnlCenter.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 20));
 
@@ -213,7 +208,7 @@ public class BookGUI extends JFrame {
 
         add(pnlCenter, BorderLayout.CENTER);
 
-        // --- 4. Khung phía dưới: Các nút chức năng (Thêm, Sửa, Xóa, Đọc sách, Xuất file) ---
+        // Khung phía dưới: Các nút chức năng (Thêm, Sửa, Xóa, Đọc sách, Xuất file)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 12));
         pnlSouth.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, new Color(220, 224, 230)));
         pnlSouth.setBackground(bgLeftPanel);
@@ -303,7 +298,7 @@ public class BookGUI extends JFrame {
         btn.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
     }
 
-    // --- Các hàm xử lý chức năng & sự kiện ---
+    // Các hàm xử lý chức năng và sự kiện
 
     private void loadAllBooks() {
         tableModel.setRowCount(0);
@@ -561,7 +556,7 @@ public class BookGUI extends JFrame {
         return text.substring(0, limit - 3) + "...";
     }
 
-    // --- Hàm main khởi chạy chương trình ---
+    // Hàm main khởi chạy chương trình
     public static void main(String[] args) {
         // Chạy giao diện trên luồng EDT để đảm bảo an toàn trong Swing
         SwingUtilities.invokeLater(new Runnable() {

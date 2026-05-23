@@ -1,0 +1,144 @@
+package book;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+// Cửa sổ đọc sách có chức năng cuộn tự động (giao diện tối giản, tối màu)
+public class AutoScrollReader extends JDialog {
+    private JTextArea txtContent;
+    private JScrollPane scrollPane;
+    private JButton btnStartStop;
+    private JSlider sldSpeed;
+    private Timer scrollTimer;
+    private boolean isScrolling = false;
+
+    private static final int MIN_SPEED_MS = 100; // Độ trễ tối đa (cuộn chậm)
+    private static final int MAX_SPEED_MS = 10;  // Độ trễ tối thiểu (cuộn nhanh)
+
+    public AutoScrollReader(Frame parent, Book book) {
+        super(parent, "Đọc sách: " + book.getTitle(), true);
+        initializeUI(book);
+        setupTimer();
+    }
+
+    private void initializeUI(Book book) {
+        setSize(600, 500);
+        setLocationRelativeTo(getParent());
+        setLayout(new BorderLayout());
+
+        // Khung tiêu đề sách
+        JPanel pnlHeader = new JPanel(new GridLayout(2, 1, 5, 5));
+        pnlHeader.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
+        pnlHeader.setBackground(new Color(40, 44, 52));
+
+        JLabel lblTitle = new JLabel(book.getTitle(), JLabel.CENTER);
+        lblTitle.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitle.setForeground(new Color(97, 175, 239));
+
+        JLabel lblAuthor = new JLabel("Tác giả: " + book.getAuthor() + " | Ngày xuất bản: " + book.getReleaseDate(), JLabel.CENTER);
+        lblAuthor.setFont(new Font("Segoe UI", Font.ITALIC, 13));
+        lblAuthor.setForeground(new Color(171, 178, 191));
+
+        pnlHeader.add(lblTitle);
+        pnlHeader.add(lblAuthor);
+        add(pnlHeader, BorderLayout.NORTH);
+
+        // Vùng hiển thị nội dung đọc
+        txtContent = new JTextArea();
+        txtContent.setText(book.getContent());
+        txtContent.setEditable(false);
+        txtContent.setLineWrap(true);
+        txtContent.setWrapStyleWord(true);
+        txtContent.setFont(new Font("Georgia", Font.PLAIN, 15));
+        txtContent.setBackground(new Color(33, 37, 43));
+        txtContent.setForeground(new Color(220, 223, 228));
+        txtContent.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        scrollPane = new JScrollPane(txtContent);
+        scrollPane.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(27, 29, 35)));
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Khung điều khiển phía dưới
+        JPanel pnlControls = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        pnlControls.setBackground(new Color(40, 44, 52));
+
+        btnStartStop = new JButton("Tự Động Cuộn (Start)");
+        btnStartStop.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        btnStartStop.setBackground(new Color(97, 175, 239));
+        btnStartStop.setForeground(Color.WHITE);
+        btnStartStop.setFocusPainted(false);
+        btnStartStop.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        btnStartStop.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                toggleScroll();
+            }
+        });
+
+        JLabel lblSpeed = new JLabel("Tốc độ cuộn:");
+        lblSpeed.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lblSpeed.setForeground(Color.WHITE);
+
+        // Thanh trượt chọn tốc độ cuộn từ 1 đến 10
+        sldSpeed = new JSlider(1, 10, 2);
+        sldSpeed.setBackground(new Color(40, 44, 52));
+        sldSpeed.setPreferredSize(new Dimension(150, 20));
+
+        pnlControls.add(btnStartStop);
+        pnlControls.add(lblSpeed);
+        pnlControls.add(sldSpeed);
+        add(pnlControls, BorderLayout.SOUTH);
+    }
+
+    private void setupTimer() {
+        // Cấu hình Timer chạy mỗi 50ms để tự động cuộn dọc xuống
+        scrollTimer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+                int currentVal = verticalBar.getValue();
+                int maxVal = verticalBar.getMaximum() - verticalBar.getModel().getExtent();
+
+                if (currentVal >= maxVal) {
+                    stopScroll();
+                    JOptionPane.showMessageDialog(AutoScrollReader.this, "Đã đọc xong cuốn sách này!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    int scrollStep = sldSpeed.getValue(); // Lấy giá trị bước cuộn từ thanh trượt
+                    verticalBar.setValue(currentVal + scrollStep);
+                }
+            }
+        });
+    }
+
+    private void toggleScroll() {
+        if (isScrolling) {
+            stopScroll();
+        } else {
+            startScroll();
+        }
+    }
+
+    private void startScroll() {
+        scrollTimer.start();
+        isScrolling = true;
+        btnStartStop.setText("Dừng Cuộn (Stop)");
+        btnStartStop.setBackground(new Color(224, 108, 117));
+    }
+
+    private void stopScroll() {
+        scrollTimer.stop();
+        isScrolling = false;
+        btnStartStop.setText("Tự Động Cuộn (Start)");
+        btnStartStop.setBackground(new Color(97, 175, 239));
+    }
+
+    @Override
+    public void dispose() {
+        if (scrollTimer != null) {
+            scrollTimer.stop();
+        }
+        super.dispose();
+    }
+}

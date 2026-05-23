@@ -1,0 +1,30 @@
+# Java Compiled Class Files
+**/bin/
+**/*.class
+
+# Database & Data Files (SQLite & Serialization)
+**/books.db
+**/students.dat
+
+# Exported files from applications
+**/exported_books/
+**/all_books_summary.txt
+**/test_export_book.txt
+**/*.txt
+
+# PDF documents (Assignment Prompts)
+*.pdf
+Đề thi lại ASM_BRJA.pdf
+Đề thực hành BRJA.pdf
+
+# IDE & Editor configurations
+.idea/
+.vscode/
+*.iml
+*.classpath
+*.project
+.settings/
+
+# OS specific files
+.DS_Store
+Thumbs.db
